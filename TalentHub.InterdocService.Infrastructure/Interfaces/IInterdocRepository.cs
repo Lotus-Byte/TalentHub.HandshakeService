@@ -5,6 +5,6 @@ namespace TalentHub.InterdocService.Infrastructure.Interfaces;
 public interface IInterdocRepository
 {
     Task<bool> AddInterdocAsync(Interdoc? interdoc);
-    Task<IEnumerable<Interdoc>> GetInterdocsByFromUserIdAsync(Guid fromUserId);
-    Task<bool> DeleteInterdocsByToUserIdAsync(Guid toUserId);
+    Task<Interdoc[]> GetInterdocsBySenderAsync(Guid fromUserId);
+    Task<bool> DeleteInterdocAsync(Guid interdocId);
 }

@@ -17,26 +17,26 @@ public class InterdocService : IInterdocService
         _mapper = mapper;
     }
     
-    public async Task<bool> SendInterdocAsync(SendInterdocDto sendInterdocDto)
+    public async Task<bool> SendInterdocAsync(SendInterdocDto createInterdocDto)
     {
-        var interdoc = _mapper.Map<SendInterdocDto, Interdoc>(sendInterdocDto); 
+        var interdoc = _mapper.Map<SendInterdocDto, Interdoc>(createInterdocDto); 
         
-        await _repository.SendInterdocAsync(interdoc);
+        return await _repository.AddInterdocAsync(interdoc);
     }
 
-    public async Task<IEnumerable<InterdocDto>?> GetInterdocsByFromUserIdAsync(Guid fromUserId)
+    public async Task<InterdocDto[]?> GetInterdocsBySenderAsync(Guid fromUserId)
     {
-        var interdocs = await _repository.GetInterdocsByFromUserIdAsync(fromUserId);
+        var interdocs = await _repository.GetInterdocsBySenderAsync(fromUserId);
         
         if (interdocs == null) return null;
         
-        var interdocsDto = _mapper.Map<IEnumerable<Interdoc>, IEnumerable<InterdocDto>>(interdocs);
+        var interdocsDto = _mapper.Map<Interdoc[], InterdocDto[]>(interdocs);
         
         return interdocsDto;
     }
 
-    public async Task<bool> DeleteInterdocsByToUserIdAsync(Guid toUserId)
+    public async Task<bool> DeleteInterdocAsync(Guid interdocId)
     {
-        return await _repository.DeleteInterdocsByToUserIdAsync(toUserId);
+        return await _repository.DeleteInterdocAsync(interdocId);
     }
 }

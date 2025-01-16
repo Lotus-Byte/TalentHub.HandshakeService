@@ -4,7 +4,7 @@ namespace TalentHub.InterdocService.Application.Interfaces;
 
 public interface IInterdocService
 {
-    Task<bool> SendInterdocAsync(SendInterdocDto user);
-    Task<InterdocDto?> GetInterdocByFromUserIdAsync(Guid fromUserId);
-    Task<bool> DeleteInterdocByToUserIdAsync(Guid toUserId);
+    Task<bool> SendInterdocAsync(SendInterdocDto createInterdocDto);
+    Task<InterdocDto[]?> GetInterdocsBySenderAsync(Guid fromUserId);
+    Task<bool> DeleteInterdocAsync(Guid interdocId);
 }

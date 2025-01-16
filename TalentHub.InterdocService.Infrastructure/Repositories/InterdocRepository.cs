@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TalentHub.InterdocService.Infrastructure.Data;
 using TalentHub.InterdocService.Infrastructure.Interfaces;
 using TalentHub.InterdocService.Infrastructure.Models;
@@ -12,25 +13,25 @@ public class InterdocRepository : IInterdocRepository
     
     public async Task<bool> AddInterdocAsync(Interdoc? interdoc)
     {
+        if (interdoc is null) return false;
         await _context.Interdocs.AddAsync(interdoc);
         await _context.SaveChangesAsync();
         
         return true;
     }
 
-    public async Task<IEnumerable<Interdoc>?> GetInterdocsByFromUserIdAsync(Guid fromUserId)
+    public async Task<Interdoc[]> GetInterdocsBySenderAsync(Guid fromUserId)
     {
-        return await _context.Interdocs.FindAsync(fromUserId);
+        return await _context.Interdocs.Where(e => e.FromUserId == fromUserId).ToArrayAsync();
     }
 
-    public async Task<bool> DeleteInterdocsByToUserIdAsync(Guid toUserId)
+    public async Task<bool> DeleteInterdocAsync(Guid interdocId)
     {
-        var interdocs = await _context.Interdocs.FindAsync(toUserId);
+        var interdoc = await _context.Interdocs.FindAsync(interdocId);
         
-        if (interdocs is null) return false;
+        if (interdoc is null) return false;
         
-        foreach (var interdoc in interdocs)
-			interdoc.Deleted = true;
+        interdoc.Deleted = true;
 
         await _context.SaveChangesAsync();
         

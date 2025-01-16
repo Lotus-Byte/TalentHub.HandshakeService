@@ -20,7 +20,7 @@ builder.Configuration.AddJsonFile("appsettings.json");
 builder.Services.AddOptions<ApplicationSettings>()
     .BindConfiguration(nameof(ApplicationSettings));
 
-builder.Services.AddDbContext<UserDbContext>((sp, options) =>
+builder.Services.AddDbContext<InterdocDbContext>((sp, options) =>
 {
     var settings = sp.GetRequiredService<IOptions<ApplicationSettings>>();
     options.EnableSensitiveDataLogging();

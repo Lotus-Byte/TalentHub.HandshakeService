@@ -1,6 +1,6 @@
-namespace TalentHub.InterdocService.Infrastructure.Models;
+﻿namespace TalentHub.InterdocService.Application.DTO.Interdoc;
 
-public class Interdoc
+public class InterdocDto
 {
     public Guid InterdocId { get; set; }
     public Guid FromUserId { get; set; }
@@ -8,6 +8,4 @@ public class Interdoc
     public Guid JobId { get; set; }
     public Guid ResumeId { get; set; }
     public string? Text { get; set; }
-    public DateTime Created { get; set; }
-    public bool Deleted { get; set; }
 }
