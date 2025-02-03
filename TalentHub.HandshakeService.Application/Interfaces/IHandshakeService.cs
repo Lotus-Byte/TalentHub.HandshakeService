@@ -1,11 +1,11 @@
-using TalentHub.HandshakeService.App.DTO.Application;
+using TalentHub.HandshakeService.Application.DTO.Handshake;
 
-namespace TalentHub.HandshakeService.App.Interfaces;
+namespace TalentHub.HandshakeService.Application.Interfaces;
 
 public interface IHandshakeService
 {
-    Task<bool> SendApplicationAsync(SendApplicationDto sendApplicationDto);
-    Task<ApplicationDto[]?> GetApplicationsBySenderAsync(Guid fromUserId);
-    Task<ApplicationDto[]?> GetApplicationsByRecipientAsync(Guid fromUserId);
-    Task<bool> DeleteApplicationAsync(Guid applicationId);
+    Task<bool> SendHandshakeAsync(SendHandshakeDto sendHandshakeDto);
+    Task<HandshakeDto[]?> GetHandshakesBySenderAsync(Guid fromUserId);
+    Task<HandshakeDto[]?> GetHandshakesByRecipientAsync(Guid fromUserId);
+    Task<bool> DeleteHandshakeAsync(Guid handshakeId);
 }

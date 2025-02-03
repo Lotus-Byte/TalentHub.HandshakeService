@@ -1,14 +1,14 @@
 using AutoMapper;
-using TalentHub.HandshakeService.App.DTO.Application;
+using TalentHub.HandshakeService.Application.DTO.Handshake;
 using TalentHub.HandshakeService.Infrastructure.Models;
 
-namespace TalentHub.HandshakeService.App.Mapping;
+namespace TalentHub.HandshakeService.Application.Mapping;
 
 public class HandshakeMappingProfile : Profile
 {
     public HandshakeMappingProfile()
     {
-        CreateMap<SendApplicationDto, Application>()
+        CreateMap<SendHandshakeDto, Handshake>()
             .ForMember(d => d.FromUserId, map => map.Ignore())
             .ForMember(d => d.ToUserId, map => map.Ignore())
             .ForMember(d => d.JobId, map => map.Ignore())

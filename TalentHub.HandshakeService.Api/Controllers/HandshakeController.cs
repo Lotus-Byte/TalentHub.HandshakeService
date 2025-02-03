@@ -1,8 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TalentHub.HandshakeService.Api.Models.Application;
-using TalentHub.HandshakeService.App.DTO.Application;
-using TalentHub.HandshakeService.App.Interfaces;
+using TalentHub.HandshakeService.Api.Models.Handshake;
+using TalentHub.HandshakeService.Application.DTO.Handshake;
+using TalentHub.HandshakeService.Application.Interfaces;
 
 namespace TalentHub.HandshakeService.Api.Controllers;
 
@@ -20,35 +20,35 @@ public class HandshakeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> SendApplicationAsync([FromBody] SendApplicationModel sendApplicationModel)
+    public async Task<IActionResult> SendHandshakeAsync([FromBody] SendHandshakeModel sendHandshakeModel)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var application = _mapper.Map<SendApplicationDto>(sendApplicationModel);
+        var handshake = _mapper.Map<SendHandshakeDto>(sendHandshakeModel);
 
-        if (application is null) return BadRequest("Incorrect data");
+        if (handshake is null) return BadRequest("Incorrect data");
 
-        return Ok(await _service.SendApplicationAsync(application));
+        return Ok(await _service.SendHandshakeAsync(handshake));
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetApplicationsBySenderAsync(Guid fromUserId)
+    public async Task<IActionResult> GetHandshakesBySenderAsync(Guid fromUserId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var applicationsDto = await _service.GetApplicationsBySenderAsync (fromUserId);
+        var handshakesDto = await _service.GetHandshakesBySenderAsync (fromUserId);
 
-        if (applicationsDto is null) return NotFound($"Employer with '{fromUserId}' id not found");
+        if (handshakesDto is null) return NotFound($"Employer with '{fromUserId}' id not found");
 
-        return Ok(_mapper.Map<ApplicationDto[]>(applicationsDto));
+        return Ok(_mapper.Map<HandshakeDto[]>(handshakesDto));
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteApplicationAsync(Guid applicationId)
+    public async Task<IActionResult> DeleteHandshakeAsync(Guid handshakeId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var result = await _service.DeleteApplicationAsync(applicationId);
+        var result = await _service.DeleteHandshakeAsync(handshakeId);
 
         return result ? NoContent() : NotFound();
     }

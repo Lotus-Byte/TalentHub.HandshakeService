@@ -1,6 +1,6 @@
 using AutoMapper;
-using TalentHub.HandshakeService.Api.Models.Application;
-using TalentHub.HandshakeService.App.DTO.Application;
+using TalentHub.HandshakeService.Api.Models.Handshake;
+using TalentHub.HandshakeService.Application.DTO.Handshake;
 
 namespace TalentHub.HandshakeService.Api.Mapping;
 
@@ -8,6 +8,6 @@ public class ApplicationMappingProfile : Profile
 {
     public ApplicationMappingProfile()
     {
-        CreateMap<SendApplicationModel, SendApplicationDto>();
+        CreateMap<SendHandshakeModel, SendHandshakeDto>();
     }
 }

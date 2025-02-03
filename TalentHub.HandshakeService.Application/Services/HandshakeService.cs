@@ -1,53 +1,53 @@
 using AutoMapper;
-using TalentHub.HandshakeService.App.DTO.Application;
-using TalentHub.HandshakeService.App.Interfaces;
+using TalentHub.HandshakeService.Application.DTO.Handshake;
+using TalentHub.HandshakeService.Application.Interfaces;
 using TalentHub.HandshakeService.Infrastructure.Interfaces;
 using TalentHub.HandshakeService.Infrastructure.Models;
 
-namespace TalentHub.HandshakeService.App.Services;
+namespace TalentHub.HandshakeService.Application.Services;
 
 public class HandshakeService : IHandshakeService
 {
     private readonly IMapper _mapper;
-    private readonly IApplicationRepository _repository;
+    private readonly IHandshakeRepository _repository;
 
-    public HandshakeService(IApplicationRepository repository, IMapper mapper)
+    public HandshakeService(IHandshakeRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;
     }
     
-    public async Task<bool> SendApplicationAsync(SendApplicationDto sendApplicationDto)
+    public async Task<bool> SendHandshakeAsync(SendHandshakeDto sendApplicationDto)
     {
-        var application = _mapper.Map<SendApplicationDto, Application>(sendApplicationDto); 
+        var application = _mapper.Map<SendHandshakeDto, Handshake>(sendApplicationDto); 
         
-        return await _repository.AddApplicationAsync(application);
+        return await _repository.AddHandshakeAsync(application);
     }
 
-    public async Task<ApplicationDto[]?> GetApplicationsBySenderAsync(Guid fromUserId)
+    public async Task<HandshakeDto[]?> GetHandshakesBySenderAsync(Guid fromUserId)
     {
-        var applications = await _repository.GetApplicationsBySenderAsync(fromUserId);
+        var applications = await _repository.GetHandshakesBySenderAsync(fromUserId);
         
         if (applications == null) return null;
         
-        var applicationsDto = _mapper.Map<Application[], ApplicationDto[]>(applications);
+        var applicationsDto = _mapper.Map<Infrastructure.Models.Handshake[], HandshakeDto[]>(applications);
         
         return applicationsDto;
     }
 
-    public async Task<ApplicationDto[]?> GetApplicationsByRecipientAsync(Guid toUserId)
+    public async Task<HandshakeDto[]?> GetHandshakesByRecipientAsync(Guid toUserId)
     {
-        var applications = await _repository.GetApplicationsBySenderAsync(toUserId);
+        var applications = await _repository.GetHandshakesBySenderAsync(toUserId);
 
         if (applications == null) return null;
 
-        var applicationsDto = _mapper.Map<Application[], ApplicationDto[]>(applications);
+        var applicationsDto = _mapper.Map<Infrastructure.Models.Handshake[], HandshakeDto[]>(applications);
 
         return applicationsDto;
     }
 
-    public async Task<bool> DeleteApplicationAsync(Guid applicationId)
+    public async Task<bool> DeleteHandshakeAsync(Guid applicationId)
     {
-        return await _repository.DeleteApplicationAsync(applicationId);
+        return await _repository.DeleteHandshakeAsync(applicationId);
     }
 }

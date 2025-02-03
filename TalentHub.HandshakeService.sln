@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalentHub.HandshakeService.Api", "TalentHub.HandshakeService.Api\TalentHub.HandshakeService.Api.csproj", "{8F535911-C449-4ACF-9716-9ADC38BD9226}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalentHub.HandshakeService.App", "TalentHub.HandshakeService.Application\TalentHub.HandshakeService.App.csproj", "{B4D2F714-14E9-4214-943E-355225C50996}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalentHub.HandshakeService.Application", "TalentHub.HandshakeService.Application\TalentHub.HandshakeService.Application.csproj", "{B4D2F714-14E9-4214-943E-355225C50996}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalentHub.HandshakeService.Infrastructure", "TalentHub.HandshakeService.Infrastructure\TalentHub.HandshakeService.Infrastructure.csproj", "{B39FB499-49B7-4E3B-BC63-2A319B00EB0E}"
 EndProject

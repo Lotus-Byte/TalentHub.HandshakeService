@@ -6,8 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using TalentHub.HandshakeService.Api.Extensions;
 using TalentHub.HandshakeService.Api.Settings;
-using TalentHub.HandshakeService.App.Interfaces;
-using TalentHub.HandshakeService.App.Services;
+using TalentHub.HandshakeService.Application.Interfaces;
+using TalentHub.HandshakeService.Application.Services;
 using TalentHub.HandshakeService.Infrastructure.Data;
 using TalentHub.HandshakeService.Infrastructure.Interfaces;
 using TalentHub.HandshakeService.Infrastructure.Repositories;
@@ -27,7 +27,7 @@ builder.Services.AddDbContext<HandshakeDbContext>((sp, options) =>
     options.UseNpgsql(settings.Value.ConnectionString);
 });
 
-builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+builder.Services.AddScoped<IHandshakeRepository, HandshakeRepository>();
 
 builder.Services.AddScoped<HandshakeService, HandshakeService>();
 

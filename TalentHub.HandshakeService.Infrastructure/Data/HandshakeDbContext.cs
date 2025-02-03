@@ -8,12 +8,12 @@ public class HandshakeDbContext : DbContext
     public HandshakeDbContext(){}
     public HandshakeDbContext(DbContextOptions<HandshakeDbContext> options) : base(options) { }
     
-    public DbSet<Application> Applications { get; set; }
+    public DbSet<Handshake> Handshakes { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Настройка таблицы Applications
-        modelBuilder.Entity<Application>()
+        modelBuilder.Entity<Handshake>()
             .ToTable("Applications")
             .HasKey(i => i.ApplicationId);
 

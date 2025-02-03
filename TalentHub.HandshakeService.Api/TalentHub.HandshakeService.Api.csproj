@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TalentHub.HandshakeService.Application\TalentHub.HandshakeService.App.csproj" />
+        <ProjectReference Include="..\TalentHub.HandshakeService.Application\TalentHub.HandshakeService.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
