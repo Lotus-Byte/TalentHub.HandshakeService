@@ -19,8 +19,8 @@ public class HandshakeService : IHandshakeService
     
     public async Task<bool> SendHandshakeAsync(SendHandshakeDto sendApplicationDto)
     {
-        var application = _mapper.Map<SendHandshakeDto, Handshake>(sendApplicationDto); 
-        
+        var application = _mapper.Map<SendHandshakeDto, Handshake>(sendApplicationDto);
+
         return await _repository.AddHandshakeAsync(application);
     }
 
@@ -30,7 +30,7 @@ public class HandshakeService : IHandshakeService
         
         if (applications == null) return null;
         
-        var applicationsDto = _mapper.Map<Infrastructure.Models.Handshake[], HandshakeDto[]>(applications);
+        var applicationsDto = _mapper.Map<Handshake[], HandshakeDto[]>(applications);
         
         return applicationsDto;
     }

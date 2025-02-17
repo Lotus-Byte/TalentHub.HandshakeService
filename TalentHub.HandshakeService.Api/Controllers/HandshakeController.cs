@@ -12,11 +12,13 @@ public class HandshakeController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IHandshakeService _service;
+    private readonly IUserService _userService;
 
-    public HandshakeController(IMapper mapper, IHandshakeService service)
+    public HandshakeController(IMapper mapper, IHandshakeService service, IUserService userService)
     {
         _mapper = mapper;
         _service = service;
+        _userService = userService;
     }
 
     [HttpPost]
@@ -28,7 +30,15 @@ public class HandshakeController : ControllerBase
 
         if (handshake is null) return BadRequest("Incorrect data");
 
-        return Ok(await _service.SendHandshakeAsync(handshake));
+        await _service.SendHandshakeAsync(handshake);
+
+        var toUserId = await _userService.GetUserAsync(sendHandshakeModel.ToUserId);
+
+        if (toUserId is null) return BadRequest("Incorrect user data");
+
+        object? resultObj = (toUserId.Role == "Person") ? toUserId.Email : null;
+
+        return Ok(resultObj);
     }
 
     [HttpGet("{id:guid}")]
