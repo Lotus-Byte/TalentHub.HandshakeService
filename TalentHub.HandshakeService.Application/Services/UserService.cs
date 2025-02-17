@@ -11,12 +11,12 @@ namespace TalentHub.HandshakeService.Application.Services
             var httpClient = new HttpClient ();
             Stream stream;
             
-            using (var resp = await httpClient.GetAsync("http://localhost:5000/GetPersonAsync?id=" + userId))
+            using (var resp = await httpClient.GetAsync("http://localhost:5000/api/PersonController/GetPersonAsync?id=" + userId))
             {
                 HttpResponseMessage resp2;
                 
                 if (!resp.IsSuccessStatusCode)
-                    using (resp2 = await httpClient.GetAsync("http://localhost:5000/GetEmployerAsync?id=" + userId))
+                    using (resp2 = await httpClient.GetAsync("http://localhost:5000/api/EmployerController/GetEmployerAsync?id=" + userId))
                     {
                         stream = await resp2.Content.ReadAsStreamAsync();
                     }
