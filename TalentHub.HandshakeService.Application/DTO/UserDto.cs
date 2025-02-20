@@ -1,4 +1,4 @@
-﻿namespace TalentHub.HandshakeService.Application.DTO.User
+﻿namespace TalentHub.HandshakeService.Application.DTO
 {
     public class UserDto
     {

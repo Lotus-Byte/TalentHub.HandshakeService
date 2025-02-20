@@ -1,8 +1,8 @@
-﻿using TalentHub.HandshakeService.Application.DTO.User;
+﻿using TalentHub.HandshakeService.Application.DTO;
 
 namespace TalentHub.HandshakeService.Application.Interfaces;
 
 public interface IUserService
 {
-    Task<UserDto?> GetUserAsync(Guid userId);
+    Task<UserDto?> GetUserAsync(SendHandshakeDto sendHandShakeDto);
 }

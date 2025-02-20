@@ -1,5 +1,5 @@
 using AutoMapper;
-using TalentHub.HandshakeService.Application.DTO.Handshake;
+using TalentHub.HandshakeService.Application.DTO;
 using TalentHub.HandshakeService.Application.Interfaces;
 using TalentHub.HandshakeService.Infrastructure.Interfaces;
 using TalentHub.HandshakeService.Infrastructure.Models;

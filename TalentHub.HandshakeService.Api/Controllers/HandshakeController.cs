@@ -1,7 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TalentHub.HandshakeService.Api.Models.Handshake;
-using TalentHub.HandshakeService.Application.DTO.Handshake;
+using TalentHub.HandshakeService.Api.Models;
+using TalentHub.HandshakeService.Application.DTO;
 using TalentHub.HandshakeService.Application.Interfaces;
 
 namespace TalentHub.HandshakeService.Api.Controllers;
@@ -32,7 +32,7 @@ public class HandshakeController : ControllerBase
 
         await _service.SendHandshakeAsync(handshake);
 
-        var toUserId = await _userService.GetUserAsync(sendHandshakeModel.ToUserId);
+        var toUserId = await _userService.GetUserAsync(handshake);
 
         if (toUserId is null) return BadRequest("Incorrect user data");
 

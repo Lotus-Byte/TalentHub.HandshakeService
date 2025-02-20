@@ -27,11 +27,15 @@ builder.Services.AddDbContext<HandshakeDbContext>((sp, options) =>
     options.UseNpgsql(settings.Value.ConnectionString);
 });
 
+builder.Services.RegisterMapper();
+
 builder.Services.AddScoped<IHandshakeRepository, HandshakeRepository>();
 
-builder.Services.AddScoped<HandshakeService, HandshakeService>();
+builder.Services.AddScoped<IHandshakeService, HandshakeService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
+builder.Services.AddHttpClient();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

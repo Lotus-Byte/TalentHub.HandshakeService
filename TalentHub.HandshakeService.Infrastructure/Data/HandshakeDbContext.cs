@@ -15,7 +15,7 @@ public class HandshakeDbContext : DbContext
         // Настройка таблицы Applications
         modelBuilder.Entity<Handshake>()
             .ToTable("Applications")
-            .HasKey(i => i.ApplicationId);
+            .HasKey(i => i.HandshakeId);
 
         base.OnModelCreating(modelBuilder);
     }

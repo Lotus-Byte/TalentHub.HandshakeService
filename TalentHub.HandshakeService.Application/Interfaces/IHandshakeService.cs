@@ -1,4 +1,4 @@
-using TalentHub.HandshakeService.Application.DTO.Handshake;
+using TalentHub.HandshakeService.Application.DTO;
 
 namespace TalentHub.HandshakeService.Application.Interfaces;
 

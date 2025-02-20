@@ -12,8 +12,8 @@ public static class MapperRegistrarExtension
             new Mapper(
                 new MapperConfiguration(cfg =>
                 {
-                    cfg.AddProfile<ApplicationMappingProfile>();
-                    cfg.AddProfile<TalentHub.HandshakeService.Application.Mapping.HandshakeMappingProfile>();
+                    cfg.AddProfile<HandshakeMappingProfile>();
+                    cfg.AddProfile<Application.Mapping.HandshakeMappingProfile>();
                 })));
         
         return services;

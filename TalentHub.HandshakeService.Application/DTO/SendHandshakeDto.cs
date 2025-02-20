@@ -1,10 +1,10 @@
-﻿namespace TalentHub.HandshakeService.Application.DTO.Handshake;
+namespace TalentHub.HandshakeService.Application.DTO;
 
-public class HandshakeDto
+public class SendHandshakeDto
 {
-    public Guid ApplicationId { get; set; }
     public Guid FromUserId { get; set; }
     public Guid ToUserId { get; set; }
+    public required string ToUserRole { get; set; }
     public Guid JobId { get; set; }
     public Guid ResumeId { get; set; }
     public string? Text { get; set; }

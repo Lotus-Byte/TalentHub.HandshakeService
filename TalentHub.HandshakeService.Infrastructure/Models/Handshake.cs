@@ -2,7 +2,7 @@ namespace TalentHub.HandshakeService.Infrastructure.Models;
 
 public class Handshake
 {
-    public Guid ApplicationId { get; set; }
+    public Guid HandshakeId { get; set; }
     public Guid FromUserId { get; set; }
     public Guid ToUserId { get; set; }
     public Guid JobId { get; set; }

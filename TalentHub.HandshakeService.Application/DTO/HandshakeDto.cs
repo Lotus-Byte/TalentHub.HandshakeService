@@ -1,7 +1,8 @@
-namespace TalentHub.HandshakeService.Api.Models.Handshake;
+﻿namespace TalentHub.HandshakeService.Application.DTO;
 
-public class SendHandshakeModel
+public class HandshakeDto
 {
+    public Guid ApplicationId { get; set; }
     public Guid FromUserId { get; set; }
     public Guid ToUserId { get; set; }
     public Guid JobId { get; set; }
