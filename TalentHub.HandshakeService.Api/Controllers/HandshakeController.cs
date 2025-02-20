@@ -36,7 +36,7 @@ public class HandshakeController : ControllerBase
 
         if (toUserId is null) return BadRequest("Incorrect user data");
 
-        object? resultObj = (toUserId.Role == "Person") ? toUserId.Email : null;
+        object? resultObj = (sendHandshakeModel.ToUserRole == "Person") ? toUserId.Email : null;
 
         return Ok(resultObj);
     }
