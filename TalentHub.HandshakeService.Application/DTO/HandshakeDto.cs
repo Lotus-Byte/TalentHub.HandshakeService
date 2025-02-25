@@ -2,6 +2,7 @@
 
 public class HandshakeDto
 {
+    // TODO: я бы везде сделал {get; init;}
     public Guid ApplicationId { get; set; }
     public Guid FromUserId { get; set; }
     public Guid ToUserId { get; set; }
