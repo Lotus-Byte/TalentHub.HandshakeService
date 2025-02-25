@@ -2,7 +2,7 @@
 {
     public class UserDto
     {
-        // TODO: email обязателен. Зачем string?
+        // TODO: email обязателен. required
         public string? Email { get; set; }
     }
 }
