@@ -19,6 +19,8 @@ namespace TalentHub.HandshakeService.Application.Services
             var strRole = sendHandshakeDto.ToUserRole;
             var userId = sendHandshakeDto.ToUserId;
 
+            // TODO: есть Uri и UriBuilder, но это ладно.
+            // TODO: Controller можно убрать
             return await _httpClient.GetFromJsonAsync<UserDto>($"http://localhost:5000/api/{strRole}Controller/Get{strRole}Async?id={userId}");
         }
     }
