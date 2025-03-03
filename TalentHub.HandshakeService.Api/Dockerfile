@@ -1,23 +1,24 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0.8-bookworm-slim-arm64v8 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["TalentHub.UserService/TalentHub.UserService.Api/TalentHub.UserService.Api.csproj", "TalentHub.UserService/TalentHub.UserService.Api/"]
-COPY ["TalentHub.UserService/TalentHub.UserService.Application/TalentHub.UserService.Application.csproj", "TalentHub.UserService/TalentHub.UserService.Application/"]
-COPY ["TalentHub.UserService/TalentHub.UserService.Infrastructure/TalentHub.UserService.Infrastructure.csproj", "TalentHub.UserService/TalentHub.UserService.Infrastructure/"]
-RUN dotnet restore "TalentHub.UserService/TalentHub.UserService.Api/TalentHub.UserService.Api.csproj"
+COPY ["TalentHub.HandshakeService.Api/TalentHub.HandshakeService.Api.csproj", "TalentHub.HandshakeService.Api/"]
+COPY ["TalentHub.HandshakeService.Application/TalentHub.HandshakeService.Application.csproj", "TalentHub.HandshakeService.Application/"]
+COPY ["TalentHub.HandshakeService.Infrastructure/TalentHub.HandshakeService.Infrastructure.csproj", "TalentHub.HandshakeService.Infrastructure/"]
+
+RUN dotnet restore "TalentHub.HandshakeService.Api/TalentHub.HandshakeService.Api.csproj"
 COPY . .
-WORKDIR "/src/TalentHub.UserService/TalentHub.UserService.Api"
-RUN dotnet build "TalentHub.UserService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/TalentHub.HandshakeService.Api"
+RUN dotnet build "TalentHub.HandshakeService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "TalentHub.UserService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "TalentHub.HandshakeService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "TalentHub.UserService.Api.dll"]
+ENTRYPOINT ["dotnet", "TalentHub.HandshakeService.Api.dll"]
