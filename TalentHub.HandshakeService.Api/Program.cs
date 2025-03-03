@@ -23,6 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
 builder.Configuration.AddJsonFile("appsettings.json");
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddOptions<ApplicationConfiguration>()
     .BindConfiguration(nameof(ApplicationConfiguration));
