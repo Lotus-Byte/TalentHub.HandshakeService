@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using TalentHub.HandshakeService.Infrastructure.Abstractions.Repositories;
 using TalentHub.HandshakeService.Infrastructure.Data;
-using TalentHub.HandshakeService.Infrastructure.Interfaces;
 using TalentHub.HandshakeService.Infrastructure.Models;
 
 namespace TalentHub.HandshakeService.Infrastructure.Repositories;
@@ -22,12 +22,12 @@ public class HandshakeRepository : IHandshakeRepository
 
     public async Task<Handshake[]> GetHandshakesBySenderAsync(Guid fromUserId)
     {
-        return await _context.Handshakes.Where(e => e.FromUserId == fromUserId).ToArrayAsync();
+        return await _context.Handshakes.Where(e => e.SenderUserId == fromUserId).ToArrayAsync();
     }
 
     public async Task<Handshake[]> GetHandshakesByRecipientAsync(Guid toUserId)
     {
-        return await _context.Handshakes.Where(e => e.ToUserId == toUserId).ToArrayAsync();
+        return await _context.Handshakes.Where(e => e.ReceiverUserId == toUserId).ToArrayAsync();
     }
 
     public async Task<bool> DeleteHandshakeAsync(Guid handshakeId)

@@ -4,5 +4,5 @@ namespace TalentHub.HandshakeService.Application.Interfaces;
 
 public interface IUserService
 {
-    Task<UserDto?> GetUserAsync(SendHandshakeDto sendHandShakeDto);
+    Task<PersonDto?> GetPersonAsync(Guid userId);
 }

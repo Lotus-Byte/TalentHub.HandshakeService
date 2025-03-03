@@ -2,12 +2,11 @@ namespace TalentHub.HandshakeService.Infrastructure.Models;
 
 public class Handshake
 {
-    public Guid HandshakeId { get; set; }
-    public Guid FromUserId { get; set; }
-    public Guid ToUserId { get; set; }
-    public Guid JobId { get; set; }
-    public Guid ResumeId { get; set; }
-    public string? Text { get; set; }
-    public DateTime Created { get; set; }
+    public Guid HandshakeId { get; init; }
+    public Guid SenderUserId { get; init; }
+    public Guid ReceiverUserId { get; init; }
+    public required string SenderRole { get; init; }
+    public Guid ItemId { get; init; }
+    public DateTime Created { get; init; }
     public bool Deleted { get; set; }
 }
