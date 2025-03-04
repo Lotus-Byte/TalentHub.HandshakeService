@@ -27,9 +27,14 @@ public class HandshakeController : ControllerBase
 
         if (sendHandshakeDto is null) return BadRequest("Incorrect data");
 
-        (bool success, object? obj)  = await _service.SendHandshakeAsync(sendHandshakeDto);
+        var result = await _service.SendHandshakeAsync(sendHandshakeDto);
 
-        return success ? Ok(obj) : BadRequest("Incorrect user data");
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
+
+        return result.ContactsInfo != null ? Ok(result.ContactsInfo) : Ok(result.Message);
     }
 
     [HttpGet("{id:guid}")]

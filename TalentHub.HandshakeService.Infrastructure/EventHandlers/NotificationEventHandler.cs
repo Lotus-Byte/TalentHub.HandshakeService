@@ -8,6 +8,8 @@ namespace TalentHub.HandshakeService.Infrastructure.EventHandlers;
 
 public class NotificationEventHandler : IEventHandler<NotificationEvent>
 {
+    private const string MessageType = "urn:message:TalentHub.NotificationService.Host.Models:NotificationEventModel";
+    
     private readonly IBus _bus;
     private readonly ILogger<NotificationEventHandler> _logger;
 
@@ -21,7 +23,10 @@ public class NotificationEventHandler : IEventHandler<NotificationEvent>
     {
          var json = JsonSerializer.Serialize(notificationEvent);
 
-        await _bus.Publish(notificationEvent);
+         await _bus.Publish(notificationEvent, context =>
+         {
+             context.SupportedMessageTypes = [ MessageType ];
+         });
 
         _logger.LogInformation($"""
                                 Notification event published:

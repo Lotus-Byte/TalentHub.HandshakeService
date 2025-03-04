@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
 using TalentHub.HandshakeService.Api.Configurations;
 using TalentHub.HandshakeService.Api.Extensions;
 using TalentHub.HandshakeService.Application.Interfaces;
@@ -23,11 +23,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
 builder.Configuration.AddJsonFile("appsettings.json");
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddOptions<ApplicationConfiguration>()
     .BindConfiguration(nameof(ApplicationConfiguration));
 builder.Services.AddOptions<RabbitMqConfiguration>()
     .BindConfiguration(nameof(RabbitMqConfiguration));
+builder.Services.AddOptions<UserServiceClientConfiguration>()
+    .BindConfiguration(nameof(UserServiceClientConfiguration));
 
 builder.Services.AddDbContext<HandshakeDbContext>((sp, options) =>
 {
@@ -46,25 +49,24 @@ builder.Services.AddMassTransit(x =>
                             ?? throw new ConfigurationException($"Lack of '{nameof(RabbitMqConfiguration)}' settings");
 
         var rabbitMqConfiguration = configuration.Value;
-
-        cfg.Host(rabbitMqConfiguration.Host, rmqCfg =>
+         
+        cfg.Host(rabbitMqConfiguration.Host, rabbitMqConfiguration.VirtualHost, h =>
         {
-            rmqCfg.Username(rabbitMqConfiguration.Username);
-            rmqCfg.Password(rabbitMqConfiguration.Password);
+            h.Username(rabbitMqConfiguration.Username);
+            h.Password(rabbitMqConfiguration.Password);
         });
-
-        cfg.Message<NotificationEvent>(ct => 
-            ct.SetEntityName(rabbitMqConfiguration.QueueName));
         
-        cfg.Send<NotificationEvent>(s => 
-            s.UseRoutingKeyFormatter(_ => rabbitMqConfiguration.QueueName));
+        cfg.Message<NotificationEvent>(ct => 
+            ct.SetEntityName("notification_event"));
         
         cfg.Publish<NotificationEvent>(p =>
         {
-            p.ExchangeType = RabbitMQ.Client.ExchangeType.Direct;
-            p.Durable = true;
-            p.AutoDelete = false;
+            p.ExchangeType = ExchangeType.Direct;
         });
+        
+        cfg.Send<NotificationEvent>(s => 
+            s.UseRoutingKeyFormatter(busCtx =>
+                rabbitMqConfiguration.QueueName));
     });
 });
 
@@ -76,8 +78,21 @@ builder.Services.AddScoped<INotificationEventFactory, NotificationEventFactory>(
 builder.Services.AddScoped<IEventHandler<NotificationEvent>, NotificationEventHandler>();
 
 builder.Services.AddControllers();
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<IUserService, UserService>((context, client) =>
+{
+    var configuration = context.GetService<IOptions<UserServiceClientConfiguration>>()
+                        ?? throw new ConfigurationException($"Lack of '{nameof(UserServiceClientConfiguration)}' settings");
+    
+    var userServiceClientConfiguration = configuration.Value;
+        
+    client.BaseAddress = new Uri(userServiceClientConfiguration.Endpoint);
+});
+
 builder.Services.AddSwaggerGen();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
 var app = builder.Build();
 
@@ -91,11 +106,8 @@ using (var scope = app.Services.CreateScope())
     logger.LogInformation("Migrations applied successfully.");
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseRouting();
 app.MapControllers();

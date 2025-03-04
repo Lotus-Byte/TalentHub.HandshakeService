@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using AutoMapper;
+using TalentHub.HandshakeService.Application.Dictionaries;
 using TalentHub.HandshakeService.Application.DTO;
 using TalentHub.HandshakeService.Application.Interfaces;
 using TalentHub.HandshakeService.Infrastructure.Abstractions;
@@ -16,7 +18,12 @@ public class HandshakeService : IHandshakeService
     private readonly IHandshakeRepository _repository;
     private readonly INotificationEventFactory _eventFactory;
     private readonly IEventHandler<NotificationEvent> _eventHandler;
-    public HandshakeService(IMapper mapper, IUserService userService, IHandshakeRepository repository, INotificationEventFactory eventFactory, IEventHandler<NotificationEvent> eventHandler)
+    public HandshakeService(
+        IMapper mapper, 
+        IUserService userService, 
+        IHandshakeRepository repository, 
+        INotificationEventFactory eventFactory, 
+        IEventHandler<NotificationEvent> eventHandler)
     {
         _mapper = mapper;
         _repository = repository;
@@ -25,41 +32,41 @@ public class HandshakeService : IHandshakeService
         _eventHandler = eventHandler;
     }
     
-    public async Task<(bool, object?)> SendHandshakeAsync(SendHandshakeDto sendHandshakeDto)
+    public async Task<UserActionResponse> SendHandshakeAsync(SendHandshakeDto sendHandshakeDto)
     {
-        var handshake = _mapper.Map<Handshake>(sendHandshakeDto);
-
-        bool success = await _repository.AddHandshakeAsync(handshake);
-        if (! success)
-            return (false, null);
+        var success = await _repository.AddHandshakeAsync(_mapper.Map<Handshake>(sendHandshakeDto));
         
+        if (!success) return UserActionResponse.Failure("Operation failed.");
 
-        object? obj;
-        if (sendHandshakeDto.SenderRole == "Employer")
+        switch (sendHandshakeDto.InitiatorRole)
         {
-            var personDto = await _userService.GetPersonAsync(sendHandshakeDto.ReceiverUserId);
-            if (personDto != null)
+            case UserRole.Employer:
+            {
+                var contactsInfo = await _userService.GetUserContactsAsync(sendHandshakeDto.RecipientId);
+                
+                return UserActionResponse.SuccessWithContacts(contactsInfo);
+            }
+            case UserRole.Person:
             {
                 var notificationEvent = _eventFactory.Create(
-                    sendHandshakeDto.SenderUserId,
+                    sendHandshakeDto.InitiatorId,
                     new Notification
                     {
                         Title = "Handshake sent",
-                        Content = $"Handshake sent to '{personDto.FirstName} {personDto.LastName}'",
+                        Content = $"Handshake sent to '{sendHandshakeDto.RecipientId}'",
                     });
+                
                 await _eventHandler.HandleAsync(notificationEvent);
-                obj = personDto;
+                
+                return UserActionResponse.SuccessWithMessage(
+                    "You have successfully applied for the position. " +
+                    "A company representative will contact you soon.");
             }
-            else
+            default:
             {
-                success = false;
-                obj = null;
+                return UserActionResponse.Failure("Unsupported user role.");
             }
         }
-        else
-            obj = null;
-
-        return (success, obj);
     }
 
     public async Task<IReadOnlyCollection<HandshakeDto>?> GetHandshakesBySenderAsync(Guid fromUserId)

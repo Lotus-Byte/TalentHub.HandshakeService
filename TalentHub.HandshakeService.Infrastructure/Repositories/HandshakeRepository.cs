@@ -14,6 +14,7 @@ public class HandshakeRepository : IHandshakeRepository
     public async Task<bool> AddHandshakeAsync(Handshake? handshake)
     {
         if (handshake is null) return false;
+        
         await _context.Handshakes.AddAsync(handshake);
         await _context.SaveChangesAsync();
         
@@ -22,12 +23,12 @@ public class HandshakeRepository : IHandshakeRepository
 
     public async Task<Handshake[]> GetHandshakesBySenderAsync(Guid fromUserId)
     {
-        return await _context.Handshakes.Where(e => e.SenderUserId == fromUserId).ToArrayAsync();
+        return await _context.Handshakes.Where(e => e.InitiatorId == fromUserId).ToArrayAsync();
     }
 
     public async Task<Handshake[]> GetHandshakesByRecipientAsync(Guid toUserId)
     {
-        return await _context.Handshakes.Where(e => e.ReceiverUserId == toUserId).ToArrayAsync();
+        return await _context.Handshakes.Where(e => e.RecipientId == toUserId).ToArrayAsync();
     }
 
     public async Task<bool> DeleteHandshakeAsync(Guid handshakeId)
