@@ -37,14 +37,14 @@ public class HandshakeController : ControllerBase
         return result.ContactsInfo != null ? Ok(result.ContactsInfo) : Ok(result.Message);
     }
 
-    [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetHandshakesBySenderAsync(Guid fromUserId)
+    [HttpGet("{initiatorUserId:guid}")]
+    public async Task<IActionResult> GetHandshakesByInitiatorAsync(Guid initiatorUserId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var handshakesDto = await _service.GetHandshakesBySenderAsync (fromUserId);
+        var handshakesDto = await _service.GetHandshakesByInitiatorAsync (initiatorUserId);
 
-        if (handshakesDto is null) return NotFound($"Employer with '{fromUserId}' id not found");
+        if (handshakesDto is null) return NotFound($"Employer with '{initiatorUserId}' id not found");
 
         return Ok(_mapper.Map<HandshakeDto[]>(handshakesDto));
     }

@@ -5,7 +5,7 @@ namespace TalentHub.HandshakeService.Application.Interfaces;
 public interface IHandshakeService
 {
     Task<UserActionResponse> SendHandshakeAsync(SendHandshakeDto sendHandshakeDto);
-    Task<IReadOnlyCollection<HandshakeDto>?> GetHandshakesBySenderAsync(Guid fromUserId);
-    Task<IReadOnlyCollection<HandshakeDto>?> GetHandshakesByRecipientAsync(Guid fromUserId);
+    Task<IReadOnlyCollection<HandshakeDto>?> GetHandshakesByInitiatorAsync(Guid initiatorUserId);
+    Task<IReadOnlyCollection<HandshakeDto>?> GetHandshakesByRecipientAsync(Guid recipientUserId);
     Task<bool> DeleteHandshakeAsync(Guid handshakeId);
 }

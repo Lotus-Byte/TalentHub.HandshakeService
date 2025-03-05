@@ -12,5 +12,7 @@ public class HandshakeMappingProfile : Profile
             .ForMember(d => d.HandshakeId, map => map.Ignore())
             .ForMember(d => d.Created, map => map.Ignore())
             .ForMember(d => d.Deleted, map => map.Ignore());
+        
+        CreateMap<Handshake, HandshakeDto>();
     }
 }

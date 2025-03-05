@@ -21,14 +21,14 @@ public class HandshakeRepository : IHandshakeRepository
         return true;
     }
 
-    public async Task<Handshake[]> GetHandshakesBySenderAsync(Guid fromUserId)
+    public async Task<Handshake[]> GetHandshakesByInitiatorAsync(Guid initiatorUserId)
     {
-        return await _context.Handshakes.Where(e => e.InitiatorId == fromUserId).ToArrayAsync();
+        return await _context.Handshakes.Where(e => e.InitiatorId == initiatorUserId).ToArrayAsync();
     }
 
-    public async Task<Handshake[]> GetHandshakesByRecipientAsync(Guid toUserId)
+    public async Task<Handshake[]> GetHandshakesByRecipientAsync(Guid recipientUserId)
     {
-        return await _context.Handshakes.Where(e => e.RecipientId == toUserId).ToArrayAsync();
+        return await _context.Handshakes.Where(e => e.RecipientId == recipientUserId).ToArrayAsync();
     }
 
     public async Task<bool> DeleteHandshakeAsync(Guid handshakeId)

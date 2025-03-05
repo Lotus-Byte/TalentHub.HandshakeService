@@ -12,9 +12,9 @@ public class HandshakeDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Настройка таблицы Applications
+        // Настройка таблицы Handshakes
         modelBuilder.Entity<Handshake>()
-            .ToTable("Applications")
+            .ToTable("Handshakes")
             .HasKey(i => i.HandshakeId);
 
         base.OnModelCreating(modelBuilder);

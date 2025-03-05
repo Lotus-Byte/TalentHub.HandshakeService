@@ -69,26 +69,26 @@ public class HandshakeService : IHandshakeService
         }
     }
 
-    public async Task<IReadOnlyCollection<HandshakeDto>?> GetHandshakesBySenderAsync(Guid fromUserId)
+    public async Task<IReadOnlyCollection<HandshakeDto>?> GetHandshakesByInitiatorAsync(Guid initiatorUserId)
     {
-        var applications = await _repository.GetHandshakesBySenderAsync(fromUserId);
+        var handshakes = await _repository.GetHandshakesByInitiatorAsync(initiatorUserId);
         
-        if (applications == null) return null;
+        if (handshakes == null) return null;
         
-        var applicationsDto = _mapper.Map<Handshake[], HandshakeDto[]>(applications);
+        var handshakeDtos = _mapper.Map<Handshake[], HandshakeDto[]>(handshakes);
         
-        return applicationsDto;
+        return handshakeDtos;
     }
 
-    public async Task<IReadOnlyCollection<HandshakeDto>?> GetHandshakesByRecipientAsync(Guid toUserId)
+    public async Task<IReadOnlyCollection<HandshakeDto>?> GetHandshakesByRecipientAsync(Guid recipientUserId)
     {
-        var applications = await _repository.GetHandshakesBySenderAsync(toUserId);
-
-        if (applications == null) return null;
-
-        var applicationsDto = _mapper.Map<Handshake[], HandshakeDto[]>(applications);
-
-        return applicationsDto;
+         var handshakes = await _repository.GetHandshakesByRecipientAsync(recipientUserId);
+        
+        if (handshakes == null) return null;
+        
+        var handshakeDtos = _mapper.Map<Handshake[], HandshakeDto[]>(handshakes);
+        
+        return handshakeDtos;
     }
 
     public async Task<bool> DeleteHandshakeAsync(Guid applicationId)

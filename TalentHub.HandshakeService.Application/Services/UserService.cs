@@ -17,7 +17,7 @@ namespace TalentHub.HandshakeService.Application.Services
             _logger = logger;
         }
         
-        public async Task<UserContactsInfo?> GetUserContactsAsync(Guid userId)
+        public async Task<UserContactsInfo> GetUserContactsAsync(Guid userId)
         {
             _logger.LogInformation($"Fetching contact information for user ID:'{userId}'");
 
